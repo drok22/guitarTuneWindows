@@ -117,6 +117,7 @@
             this.minorKeyRadioButton.TabIndex = 9;
             this.minorKeyRadioButton.Text = "Minor";
             this.minorKeyRadioButton.UseVisualStyleBackColor = true;
+            this.minorKeyRadioButton.CheckedChanged += new System.EventHandler(this.MinorMajorKeyChange);
             // 
             // guitarKeyDropDown
             // 

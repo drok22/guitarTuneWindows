@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Windows.Forms;
 using DevExpress.XtraBars;
 
 namespace guitarBro
@@ -28,8 +30,6 @@ namespace guitarBro
         private BarButtonItem standardTuningTypeButton;
         private BarButtonItem dropTuningTypeButton;
         private BarButtonItem openTuningTypeButton;
-
-        private enum ChromaticScale { A, AS, B, C, CS, D, DS, E, F, FS, G, GS }
 
         public Form1()
         {
@@ -141,7 +141,7 @@ namespace guitarBro
 
         private void SetupFretBoardGrid()
         {
-            for (int x = 0; x <= 5; x++)
+            for (int i = 0; i <= 5; i++)
                 fretBoardGrid.Rows.Add();
         }
 
@@ -166,6 +166,34 @@ namespace guitarBro
         private void UpdateMeBro()
         {
             ReStringGuitar();
+            FingerNotes();
+        }
+
+        private void FingerNotes()
+        {
+            ChromaticScale[] scalePattern;
+
+            if (minorKeyRadioButton.Checked)
+                scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
+            else
+                scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
+
+            foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
+            {
+                ChromaticScale chromaticNote = ScaleValue(guitarString.HeaderCell.Value.ToString());
+
+                for(int i = 0; i < guitarString.Cells.Count; i++)
+                {
+                    if (scalePattern.Contains(chromaticNote))
+                        guitarString.Cells[i].Value = NoteStringValue(chromaticNote);
+                    else
+                        guitarString.Cells[i].Value = "";
+
+                    chromaticNote++;
+                    if (!Enum.IsDefined(typeof(ChromaticScale), chromaticNote))
+                        chromaticNote -= 12;
+                }
+            }
         }
 
         private void ReStringGuitar()
@@ -312,22 +340,27 @@ namespace guitarBro
 
             switch (note)
             {
-                case ChromaticScale.A: noteString = "A"; break;
+                case ChromaticScale.A:  noteString = "A";  break;
                 case ChromaticScale.AS: noteString = "A#"; break;
-                case ChromaticScale.B: noteString = "B"; break;
-                case ChromaticScale.C: noteString = "C"; break;
+                case ChromaticScale.B:  noteString = "B";  break;
+                case ChromaticScale.C:  noteString = "C";  break;
                 case ChromaticScale.CS: noteString = "C#"; break;
-                case ChromaticScale.D: noteString = "D"; break;
+                case ChromaticScale.D:  noteString = "D";  break;
                 case ChromaticScale.DS: noteString = "D#"; break;
-                case ChromaticScale.E: noteString = "E"; break;
-                case ChromaticScale.F: noteString = "F"; break;
+                case ChromaticScale.E:  noteString = "E";  break;
+                case ChromaticScale.F:  noteString = "F";  break;
                 case ChromaticScale.FS: noteString = "F#"; break;
-                case ChromaticScale.G: noteString = "G"; break;
+                case ChromaticScale.G:  noteString = "G";  break;
                 case ChromaticScale.GS: noteString = "G#"; break;
                 default: break;
             }
 
             return noteString;
+        }
+
+        private void MinorMajorKeyChange(object sender, EventArgs e)
+        {
+            UpdateMeBro();
         }
     }
 }

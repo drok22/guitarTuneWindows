@@ -1,5 +1,6 @@
 # Folders
 .vs
+obj
 
 # Prerequisites
 *.d
