@@ -7,30 +7,23 @@ namespace guitarBro
 {
     public partial class Form1 : DevExpress.XtraEditors.XtraForm
     {
+        #region class properties
         private BarManager keyBarManager;
         private BarManager guitarKeyBarManager;
         private BarManager tuningTypeBarManager;
         private PopupMenu keyPopupMenu;
         private PopupMenu guitarKeyPopupMenu;
         private PopupMenu tuningTypePopupMenu;
-        private BarButtonItem keyOfAButton;
-        private BarButtonItem keyOfBButton;
-        private BarButtonItem keyOfCButton;
-        private BarButtonItem keyOfDButton;
-        private BarButtonItem keyOfEButton;
-        private BarButtonItem keyOfFButton;
-        private BarButtonItem keyOfGButton;
-        private BarButtonItem guitarKeyAButton;
-        private BarButtonItem guitarKeyBButton;
-        private BarButtonItem guitarKeyCButton;
-        private BarButtonItem guitarKeyDButton;
-        private BarButtonItem guitarKeyEButton;
-        private BarButtonItem guitarKeyFButton;
-        private BarButtonItem guitarKeyGButton;
+        private BarButtonItem[] keyButtons = new BarButtonItem[12];
+        private BarButtonItem[] guitarKeyButtons = new BarButtonItem[12];
+
+        // still need to find a way to add these to an array when there's more tunings.
         private BarButtonItem standardTuningTypeButton;
         private BarButtonItem dropTuningTypeButton;
         private BarButtonItem openTuningTypeButton;
+        #endregion
 
+        #region Loading
         public Form1()
         {
             InitializeComponent();
@@ -41,9 +34,44 @@ namespace guitarBro
             SetupFretBoardGrid();
             minorKeyRadioButton.Checked = true;
             SetupBarManagers();
-            //UpdateMeBro(); // maybe don't need this line since its being updated when buttons change.
+        }
+        #endregion
+
+        #region UI Update
+
+        private void UpdateMeBro()
+        {
+            ReStringGuitar();
+            FingerNotes();
         }
 
+        private void FingerNotes()
+        {
+            ChromaticScale[] scalePattern;
+
+            if (minorKeyRadioButton.Checked)
+                scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
+            else
+                scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
+
+            foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
+            {
+                ChromaticScale chromaticNote = ScaleValue(guitarString.HeaderCell.Value.ToString());
+
+                for (int i = 0; i < guitarString.Cells.Count; i++)
+                {
+                    if (scalePattern.Contains(chromaticNote))
+                        guitarString.Cells[i].Value = NoteStringValue(chromaticNote);
+                    else
+                        guitarString.Cells[i].Value = "";
+
+                    chromaticNote = FindNextInterval(1, chromaticNote);
+                }
+            }
+        }
+        #endregion
+
+        #region UI Setup
         private void SetupBarManagers()
         {
             SetupKeyBarManager();
@@ -55,32 +83,22 @@ namespace guitarBro
         {
             keyBarManager = new BarManager { Form = this };
             keyPopupMenu = new PopupMenu();
-            keyOfAButton = new BarButtonItem(keyBarManager, "A") { Tag = "A" };
-            keyOfAButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfAButton);
-            keyOfBButton = new BarButtonItem(keyBarManager, "B") { Tag = "B" };
-            keyOfBButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfBButton);
-            keyOfCButton = new BarButtonItem(keyBarManager, "C") { Tag = "C" };
-            keyOfCButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfCButton);
-            keyOfDButton = new BarButtonItem(keyBarManager, "D") { Tag = "D" };
-            keyOfDButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfDButton);
-            keyOfEButton = new BarButtonItem(keyBarManager, "E") { Tag = "E" };
-            keyOfEButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfEButton);
-            keyOfFButton = new BarButtonItem(keyBarManager, "F") { Tag = "F" };
-            keyOfFButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfFButton);
-            keyOfGButton = new BarButtonItem(keyBarManager, "G") { Tag = "G" };
-            keyOfGButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
-            keyPopupMenu.AddItem(keyOfGButton);
+            ChromaticScale key = ChromaticScale.A;
+            string noteString = NoteStringValue(key);
+
+            for (int i = 0; i < keyButtons.Length; i++)
+            {
+                keyButtons[i] = new BarButtonItem(keyBarManager, noteString) { Tag = noteString };
+                keyButtons[i].ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.KeySelected);
+                keyPopupMenu.AddItem(keyButtons[i]);
+
+                key = FindNextInterval(1, key);
+                noteString = NoteStringValue(key);
+            }
 
             keyDropDown.Parent = this;
             keyDropDown.DropDownControl = keyPopupMenu;
-
-            ItemClickEventArgs keySetupArgs = new ItemClickEventArgs(keyOfEButton, null);
+            ItemClickEventArgs keySetupArgs = new ItemClickEventArgs(keyButtons[7], null);
             KeySelected(keyBarManager, keySetupArgs);
         }
 
@@ -88,32 +106,22 @@ namespace guitarBro
         {
             guitarKeyBarManager = new BarManager { Form = this };
             guitarKeyPopupMenu = new PopupMenu();
-            guitarKeyAButton = new BarButtonItem(keyBarManager, "A") { Tag = "A" };
-            guitarKeyAButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyAButton);
-            guitarKeyBButton = new BarButtonItem(keyBarManager, "B") { Tag = "B" };
-            guitarKeyBButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyBButton);
-            guitarKeyCButton = new BarButtonItem(keyBarManager, "C") { Tag = "C" };
-            guitarKeyCButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyCButton);
-            guitarKeyDButton = new BarButtonItem(keyBarManager, "D") { Tag = "D" };
-            guitarKeyDButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyDButton);
-            guitarKeyEButton = new BarButtonItem(keyBarManager, "E") { Tag = "E" };
-            guitarKeyEButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyEButton);
-            guitarKeyFButton = new BarButtonItem(keyBarManager, "F") { Tag = "F" };
-            guitarKeyFButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyFButton);
-            guitarKeyGButton = new BarButtonItem(keyBarManager, "G") { Tag = "G" };
-            guitarKeyGButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
-            guitarKeyPopupMenu.AddItem(guitarKeyGButton);
+            ChromaticScale key = ChromaticScale.A;
+            string noteString = NoteStringValue(key);
+
+            for (int i = 0; i < guitarKeyButtons.Length; i++)
+            {
+                guitarKeyButtons[i] = new BarButtonItem(keyBarManager, noteString) { Tag = noteString };
+                guitarKeyButtons[i].ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.GuitarKeySelected);
+                guitarKeyPopupMenu.AddItem(guitarKeyButtons[i]);
+
+                key = FindNextInterval(1, key);
+                noteString = NoteStringValue(key);
+            }
 
             guitarKeyDropDown.Parent = this;
             guitarKeyDropDown.DropDownControl = guitarKeyPopupMenu;
-
-            ItemClickEventArgs guitarKeySetupArgs = new ItemClickEventArgs(guitarKeyEButton, null);
+            ItemClickEventArgs guitarKeySetupArgs = new ItemClickEventArgs(guitarKeyButtons[7], null);
             GuitarKeySelected(guitarKeyBarManager, guitarKeySetupArgs);
         }
 
@@ -144,58 +152,9 @@ namespace guitarBro
             for (int i = 0; i <= 5; i++)
                 fretBoardGrid.Rows.Add();
         }
+        #endregion
 
-        private void KeySelected(object sender, ItemClickEventArgs clickedItem)
-        {
-            keyDropDown.Text = clickedItem.Item.Caption;
-            UpdateMeBro();
-        }
-
-        private void GuitarKeySelected(object sender, ItemClickEventArgs clickedItem)
-        {
-            guitarKeyDropDown.Text = clickedItem.Item.Caption;
-            UpdateMeBro();
-        }
-
-        private void TuningTypeSelected(object sender, ItemClickEventArgs clickedItem)
-        {
-            tuningTypeDropDown.Text = clickedItem.Item.Caption;
-            UpdateMeBro();
-        }
-
-        private void UpdateMeBro()
-        {
-            ReStringGuitar();
-            FingerNotes();
-        }
-
-        private void FingerNotes()
-        {
-            ChromaticScale[] scalePattern;
-
-            if (minorKeyRadioButton.Checked)
-                scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
-            else
-                scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
-
-            foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
-            {
-                ChromaticScale chromaticNote = ScaleValue(guitarString.HeaderCell.Value.ToString());
-
-                for(int i = 0; i < guitarString.Cells.Count; i++)
-                {
-                    if (scalePattern.Contains(chromaticNote))
-                        guitarString.Cells[i].Value = NoteStringValue(chromaticNote);
-                    else
-                        guitarString.Cells[i].Value = "";
-
-                    chromaticNote++;
-                    if (!Enum.IsDefined(typeof(ChromaticScale), chromaticNote))
-                        chromaticNote -= 12;
-                }
-            }
-        }
-
+        #region Tune Guitar
         private void ReStringGuitar()
         {
             ChromaticScale sixthString = TuneSixthString();
@@ -266,101 +225,33 @@ namespace guitarBro
             return FindFifth(note);
         }
 
-        private ChromaticScale FindThird(ChromaticScale note)
-        {
-            ChromaticScale third = note + 3;
-            if (!Enum.IsDefined(typeof(ChromaticScale), third))
-                third -= 12;
+        #endregion
 
-            return third;
-        }
-
-        private ChromaticScale FindFourth(ChromaticScale note)
-        {
-            ChromaticScale fourth = note + 4;
-            if (!Enum.IsDefined(typeof(ChromaticScale), fourth))
-                fourth -= 12;
-
-            return fourth;
-        }
-
-        private ChromaticScale FindFifth(ChromaticScale note)
-        {
-            ChromaticScale fifth = note + 5;
-            if (!Enum.IsDefined(typeof(ChromaticScale), fifth))
-                fifth -= 12;
-
-            return fifth;
-        }
-
-        private ChromaticScale FindSixth(ChromaticScale note)
-        {
-            ChromaticScale sixth = note + 6;
-            if (!Enum.IsDefined(typeof(ChromaticScale), sixth))
-                sixth -= 12;
-
-            return sixth;
-        }
-
-        private ChromaticScale FindSeventh(ChromaticScale note)
-        {
-            ChromaticScale seventh = note + 7;
-            if (!Enum.IsDefined(typeof(ChromaticScale), seventh))
-                seventh -= 12;
-
-            return seventh;
-        }
-
-        private ChromaticScale ScaleValue(string scaleChar)
-        {
-            ChromaticScale note = ChromaticScale.A;
-
-            switch (scaleChar)
-            {
-                case "A": note = ChromaticScale.A; break;
-                case "AS": note = ChromaticScale.AS; break;
-                case "B": note = ChromaticScale.B; break;
-                case "C": note = ChromaticScale.C; break;
-                case "CS": note = ChromaticScale.CS; break;
-                case "D": note = ChromaticScale.D; break;
-                case "DS": note = ChromaticScale.DS; break;
-                case "E": note = ChromaticScale.E; break;
-                case "F": note = ChromaticScale.F; break;
-                case "FS": note = ChromaticScale.FS; break;
-                case "G": note = ChromaticScale.G; break;
-                case "GS": note = ChromaticScale.GS; break;
-                default: break;
-            }
-            return note; // maybe should have an error but we'll see.
-        }
-
-        private String NoteStringValue(ChromaticScale note)
-        {
-            String noteString = "";
-
-            switch (note)
-            {
-                case ChromaticScale.A:  noteString = "A";  break;
-                case ChromaticScale.AS: noteString = "A#"; break;
-                case ChromaticScale.B:  noteString = "B";  break;
-                case ChromaticScale.C:  noteString = "C";  break;
-                case ChromaticScale.CS: noteString = "C#"; break;
-                case ChromaticScale.D:  noteString = "D";  break;
-                case ChromaticScale.DS: noteString = "D#"; break;
-                case ChromaticScale.E:  noteString = "E";  break;
-                case ChromaticScale.F:  noteString = "F";  break;
-                case ChromaticScale.FS: noteString = "F#"; break;
-                case ChromaticScale.G:  noteString = "G";  break;
-                case ChromaticScale.GS: noteString = "G#"; break;
-                default: break;
-            }
-
-            return noteString;
-        }
+        #region UI actions
 
         private void MinorMajorKeyChange(object sender, EventArgs e)
         {
             UpdateMeBro();
         }
+
+        private void KeySelected(object sender, ItemClickEventArgs clickedItem)
+        {
+            keyDropDown.Text = clickedItem.Item.Caption;
+            UpdateMeBro();
+        }
+
+        private void GuitarKeySelected(object sender, ItemClickEventArgs clickedItem)
+        {
+            guitarKeyDropDown.Text = clickedItem.Item.Caption;
+            UpdateMeBro();
+        }
+
+        private void TuningTypeSelected(object sender, ItemClickEventArgs clickedItem)
+        {
+            tuningTypeDropDown.Text = clickedItem.Item.Caption;
+            UpdateMeBro();
+        }
+
+        #endregion
     }
 }
