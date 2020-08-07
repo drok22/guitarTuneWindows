@@ -1,6 +1,6 @@
 ﻿namespace guitarBro
 {
-    partial class Form1
+    partial class GuitarBro
     {
 
         /// <summary>
@@ -363,7 +363,7 @@
             this.fret24.ReadOnly = true;
             this.fret24.Width = 25;
             // 
-            // Form1
+            // GuitarBro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -377,8 +377,8 @@
             this.Controls.Add(this.keyDropDown);
             this.Controls.Add(this.tuningLabel);
             this.Controls.Add(this.keyLabel);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "GuitarBro";
+            this.Text = "GuitarBro";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fretBoardGrid)).EndInit();

@@ -5,7 +5,7 @@ using DevExpress.XtraBars;
 
 namespace guitarBro
 {
-    public partial class Form1 : DevExpress.XtraEditors.XtraForm
+    public partial class GuitarBro : DevExpress.XtraEditors.XtraForm
     {
         #region class properties
         private BarManager keyBarManager;
@@ -24,7 +24,7 @@ namespace guitarBro
         #endregion
 
         #region Loading
-        public Form1()
+        public GuitarBro()
         {
             InitializeComponent();
         }

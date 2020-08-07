@@ -2,7 +2,7 @@
 
 namespace guitarBro
 {
-    public partial class Form1
+    public partial class GuitarBro
     {
         #region class properties
         private enum ChromaticScale { A, AS, B, C, CS, D, DS, E, F, FS, G, GS }
