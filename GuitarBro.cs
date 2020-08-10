@@ -9,14 +9,6 @@ namespace guitarBro
     {
         #region class properties
 
-        private BarManager keyBarManager;
-        private BarManager scaleBarManager;
-        private BarManager guitarKeyBarManager;
-        private BarManager tuningTypeBarManager;
-        private PopupMenu keyPopupMenu;
-        private PopupMenu scalePopupMenu;
-        private PopupMenu guitarKeyPopupMenu;
-        private PopupMenu tuningTypePopupMenu;
         private BarButtonItem[] keyButtons = new BarButtonItem[12];
         private BarButtonItem[] guitarKeyButtons = new BarButtonItem[12];
 
@@ -29,6 +21,16 @@ namespace guitarBro
         private BarButtonItem standardTuningTypeButton;
         private BarButtonItem dropTuningTypeButton;
         private BarButtonItem openTuningTypeButton;
+
+        private BarManager keyBarManager;
+        private BarManager scaleBarManager;
+        private BarManager guitarKeyBarManager;
+        private BarManager tuningTypeBarManager;
+
+        private PopupMenu keyPopupMenu;
+        private PopupMenu scalePopupMenu;
+        private PopupMenu guitarKeyPopupMenu;
+        private PopupMenu tuningTypePopupMenu;
 
         #endregion
 
