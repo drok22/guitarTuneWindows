@@ -8,33 +8,44 @@ namespace guitarBro
     public partial class GuitarBro : DevExpress.XtraEditors.XtraForm
     {
         #region class properties
+
         private BarManager keyBarManager;
+        private BarManager scaleBarManager;
         private BarManager guitarKeyBarManager;
         private BarManager tuningTypeBarManager;
         private PopupMenu keyPopupMenu;
+        private PopupMenu scalePopupMenu;
         private PopupMenu guitarKeyPopupMenu;
         private PopupMenu tuningTypePopupMenu;
         private BarButtonItem[] keyButtons = new BarButtonItem[12];
         private BarButtonItem[] guitarKeyButtons = new BarButtonItem[12];
 
-        // still need to find a way to add these to an array when there's more tunings.
+        // still need to find a way to add these to an array when there's more tunings/scales.
+        private BarButtonItem pentatonicScaleButton;
+        private BarButtonItem majorScaleButton;
+        private BarButtonItem minorScaleButton;
+        private BarButtonItem bluesScaleButton;
+
         private BarButtonItem standardTuningTypeButton;
         private BarButtonItem dropTuningTypeButton;
         private BarButtonItem openTuningTypeButton;
+
         #endregion
 
         #region Loading
+
         public GuitarBro()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void LoadGuitarBro(object sender, EventArgs e)
         {
             SetupFretBoardGrid();
-            minorKeyRadioButton.Checked = true;
+            minorMajorToggleSwitch.IsOn = false;
             SetupBarManagers();
         }
+
         #endregion
 
         #region UI Update
@@ -47,12 +58,24 @@ namespace guitarBro
 
         private void FingerNotes()
         {
-            ChromaticScale[] scalePattern;
+            ChromaticScale[] scalePattern = FullChromaticScale(); // Put every note in an array just to catch errors if they happen.
 
-            if (minorKeyRadioButton.Checked)
-                scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
-            else
-                scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
+            switch(scaleDropDown.Text)
+            {
+                case "Pentatonic":
+                    scalePattern = PentatonicScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                case "Minor":
+                    scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                case "Major":
+                    scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                case "Blues":
+                    scalePattern = BluesScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                default: break;
+            }
 
             foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
             {
@@ -68,13 +91,49 @@ namespace guitarBro
                     chromaticNote = FindNextInterval(1, chromaticNote);
                 }
             }
+
+            UpdateScalePatternInstruction(scalePattern);
         }
+
+        private void UpdateScalePatternInstruction(ChromaticScale[] scalePattern)
+        {
+            string keyString = "";
+            string noteList = "";
+
+            keyString += NoteStringValue(scalePattern[0]) + " ";
+
+            if(minorMajorToggleSwitch.IsOn)
+                keyString += "Major ";
+            else
+                keyString += "Minor ";
+
+            if((!scaleDropDown.Text.Contains("Major")) && (!scaleDropDown.Text.Contains("Minor")))
+                keyString += scaleDropDown.Text;
+
+            foreach (ChromaticScale note in scalePattern)
+                noteList += NoteStringValue(note) + " ";
+
+            keyDisplayLabel.Text = keyString;
+            scalePatternDisplayLabel.Text = noteList;
+        }
+
+        private void UpdateGuitarTuningInstruction( )
+        {
+            string tuneGuitarToString = "";
+
+            for(int i = 5; i >= 0; i--)
+                tuneGuitarToString += fretBoardGrid.Rows[i].HeaderCell.Value + " ";
+
+            guitarStringTuningDisplayLabel.Text = tuneGuitarToString;
+        }
+
         #endregion
 
         #region UI Setup
         private void SetupBarManagers()
         {
             SetupKeyBarManager();
+            SetupScaleBarManager();
             SetupGuitarKeyBarManager();
             SetupTuningTypeBarManager();
         }
@@ -100,6 +159,31 @@ namespace guitarBro
             keyDropDown.DropDownControl = keyPopupMenu;
             ItemClickEventArgs keySetupArgs = new ItemClickEventArgs(keyButtons[7], null);
             KeySelected(keyBarManager, keySetupArgs);
+        }
+
+        private void SetupScaleBarManager()
+        {
+            scaleBarManager = new BarManager { Form = this };
+            scalePopupMenu = new PopupMenu();
+
+            minorScaleButton = new BarButtonItem(scaleBarManager, "Minor") { Tag = "Minor" };
+            minorScaleButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ScaleSelected);
+            scalePopupMenu.AddItem(minorScaleButton);
+            majorScaleButton = new BarButtonItem(scaleBarManager, "Major") { Tag = "Major" };
+            majorScaleButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ScaleSelected);
+            scalePopupMenu.AddItem(majorScaleButton);
+            pentatonicScaleButton = new BarButtonItem(scaleBarManager, "Pentatonic") { Tag = "Pentatonic" };
+            pentatonicScaleButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ScaleSelected);
+            scalePopupMenu.AddItem(pentatonicScaleButton);
+            bluesScaleButton = new BarButtonItem(scaleBarManager, "Blues") { Tag = "Blues" };
+            bluesScaleButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ScaleSelected);
+            scalePopupMenu.AddItem(bluesScaleButton);
+
+            scaleDropDown.Parent = this;
+            scaleDropDown.DropDownControl = scalePopupMenu;
+
+            ItemClickEventArgs scaleSetupArgs = new ItemClickEventArgs(minorScaleButton, null);
+            ScaleSelected(scaleBarManager, scaleSetupArgs);
         }
 
         private void SetupGuitarKeyBarManager()
@@ -169,6 +253,8 @@ namespace guitarBro
             fretBoardGrid.Rows[1].HeaderCell.Value = NoteStringValue(secondString);
             ChromaticScale firstString = TuneFirstString(secondString);
             fretBoardGrid.Rows[0].HeaderCell.Value = NoteStringValue(firstString);
+
+            UpdateGuitarTuningInstruction();
         }
 
         private ChromaticScale TuneSixthString() // 'E' string(low)
@@ -229,8 +315,13 @@ namespace guitarBro
 
         #region UI actions
 
-        private void MinorMajorKeyChange(object sender, EventArgs e)
+        private void MinorMajorToggleSwitch_Toggled(object sender, EventArgs e)
         {
+            if(scaleDropDown.Text.Equals("Minor") && minorMajorToggleSwitch.IsOn)
+                scaleDropDown.Text = "Major";
+            else if (scaleDropDown.Text.Equals("Major") && !minorMajorToggleSwitch.IsOn)
+                scaleDropDown.Text = "Minor";
+
             UpdateMeBro();
         }
 
@@ -249,6 +340,18 @@ namespace guitarBro
         private void TuningTypeSelected(object sender, ItemClickEventArgs clickedItem)
         {
             tuningTypeDropDown.Text = clickedItem.Item.Caption;
+            UpdateMeBro();
+        }
+
+        private void ScaleSelected(object sender, ItemClickEventArgs clickedItem)
+        {
+            scaleDropDown.Text = clickedItem.Item.Caption;
+
+            if (clickedItem.Item.Caption.Equals("Minor"))
+                minorMajorToggleSwitch.IsOn = false;
+            else if (clickedItem.Item.Caption.Equals("Major"))
+                minorMajorToggleSwitch.IsOn = true;
+
             UpdateMeBro();
         }
 

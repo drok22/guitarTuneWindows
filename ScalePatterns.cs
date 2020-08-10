@@ -6,7 +6,9 @@ namespace guitarBro
     {
         #region class properties
         private enum ChromaticScale { A, AS, B, C, CS, D, DS, E, F, FS, G, GS }
+        #endregion
 
+        #region Scale Patterns
         // MinorScalePattern - whole, half, whole, whole, half, whole, whole
         private ChromaticScale[] MinorScalePatternForKey(ChromaticScale note)
         {
@@ -56,6 +58,133 @@ namespace guitarBro
 
             return scalePattern;
         }
+
+        private ChromaticScale[] PentatonicScalePatternForKey(ChromaticScale note)
+        {
+            if(minorMajorToggleSwitch.IsOn)
+                return MajorPentatonicScalePatternForKey(note);
+            else
+                return MinorPentatonicScalePatternForKey(note);
+        }
+
+        // Minor Pentatonic Pattern - 3,2,2,3 (semitones)
+        private ChromaticScale[] MinorPentatonicScalePatternForKey(ChromaticScale note)
+        {
+            ChromaticScale[] scalePattern = new ChromaticScale[5];
+            ChromaticScale nextStep = note;
+
+            for (int i = 0; i < scalePattern.Length; i++)
+            {
+                if (i == 0) // root
+                    scalePattern[i] = note;
+                else if ((i == 2) || (i == 3)) // 2 semitones
+                {
+                    nextStep = FindNextInterval(2, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+                else // 3 semitones
+                {
+                    nextStep = FindNextInterval(3, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+            }
+
+            return scalePattern;
+        }
+
+        // Major Pentatonic Pattern - 2,2,3,2 (semitones)
+        private ChromaticScale[] MajorPentatonicScalePatternForKey(ChromaticScale note)
+        {
+            ChromaticScale[] scalePattern = new ChromaticScale[5];
+            ChromaticScale nextStep = note;
+
+            for (int i = 0; i < scalePattern.Length; i++)
+            {
+                if (i == 0) // root
+                    scalePattern[i] = note;
+                else if (i == 3) // 3 semitones
+                {
+                    nextStep = FindNextInterval(3, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+                else // 2 semitones
+                {
+                    nextStep = FindNextInterval(2, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+            }
+
+            return scalePattern;
+        }
+
+        private ChromaticScale[] BluesScalePatternForKey(ChromaticScale note)
+        {
+            if (minorMajorToggleSwitch.IsOn)
+                return MajorBluesScalePatternForKey(note);
+            else
+                return MinorBluesScalePatternForKey(note);
+        }
+
+        // Minor Blues Pattern - 3, 2, 1, 1, 3
+        private ChromaticScale[] MinorBluesScalePatternForKey(ChromaticScale note)
+        {
+            ChromaticScale[] scalePattern = new ChromaticScale[6];
+            ChromaticScale nextStep = note;
+
+            for (int i = 0; i < scalePattern.Length; i++)
+            {
+                if (i == 0) // root
+                    scalePattern[i] = note;
+                else if ((i == 3) || (i == 4)) // 1 semitone
+                {
+                    nextStep = FindNextInterval(1, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+                else if (i == 2) // 2 semitones
+                {
+                    nextStep = FindNextInterval(2, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+                else // 3 semitones
+                {
+                    nextStep = FindNextInterval(3, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+            }
+
+            return scalePattern;
+        }
+
+        // Major Blues Pattern - 2, 1, 1, 3, 2
+        private ChromaticScale[] MajorBluesScalePatternForKey(ChromaticScale note)
+        {
+            ChromaticScale[] scalePattern = new ChromaticScale[6];
+            ChromaticScale nextStep = note;
+
+            for (int i = 0; i < scalePattern.Length; i++)
+            {
+                if (i == 0) // root
+                    scalePattern[i] = note;
+                else if ((i == 2) || (i == 3)) // 1 semitone
+                {
+                    nextStep = FindNextInterval(1, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+                else if ((i == 1) || (i == 5)) // 2 semitones
+                {
+                    nextStep = FindNextInterval(2, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+                else // 3 semitones
+                {
+                    nextStep = FindNextInterval(3, nextStep);
+                    scalePattern[i] = nextStep;
+                }
+            }
+
+            return scalePattern;
+        }
+
         #endregion
 
         #region Finding Intervals
@@ -127,6 +256,27 @@ namespace guitarBro
 
             return noteString;
         }
+        #endregion
+
+        #region Pre-Made Scale Patterns
+
+        private ChromaticScale[] FullChromaticScale()
+        {
+            return new ChromaticScale[]
+            {   ChromaticScale.A,
+                ChromaticScale.AS,
+                ChromaticScale.B,
+                ChromaticScale.C,
+                ChromaticScale.CS,
+                ChromaticScale.D,
+                ChromaticScale.DS,
+                ChromaticScale.E,
+                ChromaticScale.F,
+                ChromaticScale.FS,
+                ChromaticScale.G,
+                ChromaticScale.GS   };
+        }
+
         #endregion
     }
 }
