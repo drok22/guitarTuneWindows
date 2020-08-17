@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraBars;
@@ -30,7 +31,7 @@ namespace guitarBro
         private PopupMenu keyPopupMenu;
         private PopupMenu scalePopupMenu;
         private PopupMenu guitarKeyPopupMenu;
-        private PopupMenu tuningTypePopupMenu;
+        private PopupMenu tuningTypePopupMenu;  
 
         #endregion
 
@@ -81,6 +82,7 @@ namespace guitarBro
 
             foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
             {
+                // Get the first scale note available on the string from the header.
                 ChromaticScale chromaticNote = ScaleValue(guitarString.HeaderCell.Value.ToString());
 
                 for (int i = 0; i < guitarString.Cells.Count; i++)
@@ -357,6 +359,62 @@ namespace guitarBro
             UpdateMeBro();
         }
 
+        private void CsvButton_Click(object sender, EventArgs e)
+        {
+            SaveCSVFileWithText(CSVTextForCurrentScreen());
+        }
+
+        private string CSVTextForCurrentScreen()
+        {
+            string csvText = "";
+
+            foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
+            {
+                for (int i = 0; i < guitarString.Cells.Count; i++)
+                {
+                    csvText += guitarString.Cells[i].Value;
+
+                    if (i < guitarString.Cells.Count)
+                        csvText += ",";
+                }
+
+                csvText += "\n";
+            }
+
+            // add a label so the guitar fret numbers are visible in the sheet export.
+            csvText += CSVTextForGuitarFrets();
+
+            return csvText;
+        }
+
+        private void SaveCSVFileWithText(string csvText)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName += GenerateFileNameForCSVExport();
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                File.WriteAllText(saveFileDialog.FileName, csvText);
+        }
+
+        private string GenerateFileNameForCSVExport()
+        {
+            return keyDisplayLabel.Text + tuningTypeDropDown.Text + " " + guitarKeyDropDown.Text;
+        }
+
+        private string CSVTextForGuitarFrets()
+        {
+            string guitarFretCountCSV = "";
+
+            for (int i = 0; i < fretBoardGrid.ColumnCount; i++)
+            { 
+                guitarFretCountCSV += i.ToString();
+                guitarFretCountCSV += ",";
+            }
+
+            guitarFretCountCSV += "\n";
+
+            return guitarFretCountCSV;
+        }
         #endregion
     }
 }

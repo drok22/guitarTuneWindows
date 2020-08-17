@@ -71,6 +71,7 @@
             this.guitarTuningDisplayLabel = new System.Windows.Forms.Label();
             this.scalePatternDisplayLabel = new System.Windows.Forms.Label();
             this.guitarStringTuningDisplayLabel = new System.Windows.Forms.Label();
+            this.csvButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fretBoardGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minorMajorToggleSwitch.Properties)).BeginInit();
@@ -413,11 +414,22 @@
             this.guitarStringTuningDisplayLabel.TabIndex = 21;
             this.guitarStringTuningDisplayLabel.Text = "E A D G B E";
             // 
+            // csvButton
+            // 
+            this.csvButton.Location = new System.Drawing.Point(592, 104);
+            this.csvButton.Name = "csvButton";
+            this.csvButton.Size = new System.Drawing.Size(75, 23);
+            this.csvButton.TabIndex = 22;
+            this.csvButton.Text = "save to CSV";
+            this.csvButton.UseVisualStyleBackColor = true;
+            this.csvButton.Click += new System.EventHandler(this.CsvButton_Click);
+            // 
             // GuitarBro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 293);
+            this.Controls.Add(this.csvButton);
             this.Controls.Add(this.guitarStringTuningDisplayLabel);
             this.Controls.Add(this.scalePatternDisplayLabel);
             this.Controls.Add(this.guitarTuningDisplayLabel);
@@ -486,6 +498,7 @@
         private System.Windows.Forms.Label guitarTuningDisplayLabel;
         private System.Windows.Forms.Label scalePatternDisplayLabel;
         private System.Windows.Forms.Label guitarStringTuningDisplayLabel;
+        private System.Windows.Forms.Button csvButton;
     }
 
 
