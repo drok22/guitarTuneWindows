@@ -398,7 +398,10 @@ namespace guitarBro
 
         private string GenerateFileNameForCSVExport()
         {
-            return keyDisplayLabel.Text + tuningTypeDropDown.Text + " " + guitarKeyDropDown.Text;
+            return keyDropDown.Text + " " + 
+                   scaleDropDown.Text + " " + 
+                   tuningTypeDropDown.Text + " " + 
+                   guitarKeyDropDown.Text + ".txt";
         }
 
         private string CSVTextForGuitarFrets()
