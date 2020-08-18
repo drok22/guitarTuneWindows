@@ -185,6 +185,30 @@ namespace guitarBro
             return scalePattern;
         }
 
+        private ChromaticScale[] UpdateScalePattern()
+        {
+            ChromaticScale[] scalePattern;
+
+            switch (scaleDropDown.Text)
+            {
+                case "Pentatonic":
+                    scalePattern = PentatonicScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                case "Minor":
+                    scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                case "Major":
+                    scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                case "Blues":
+                    scalePattern = BluesScalePatternForKey(ScaleValue(keyDropDown.Text));
+                    break;
+                default: scalePattern = FullChromaticScale(); break;
+            }
+
+            return scalePattern;
+        }
+
         #endregion
 
         #region Finding Intervals

@@ -72,9 +72,11 @@
             this.scalePatternDisplayLabel = new System.Windows.Forms.Label();
             this.guitarStringTuningDisplayLabel = new System.Windows.Forms.Label();
             this.csvButton = new System.Windows.Forms.Button();
+            this.fretsToNotesToggle = new DevExpress.XtraEditors.ToggleSwitch();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fretBoardGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minorMajorToggleSwitch.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fretsToNotesToggle.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // keyLabel
@@ -376,7 +378,7 @@
             this.minorMajorToggleSwitch.Properties.OnText = "Major";
             this.minorMajorToggleSwitch.Size = new System.Drawing.Size(101, 24);
             this.minorMajorToggleSwitch.TabIndex = 16;
-            this.minorMajorToggleSwitch.Toggled += new System.EventHandler(this.MinorMajorToggleSwitch_Toggled);
+            this.minorMajorToggleSwitch.Toggled += new System.EventHandler(this.MinorMajorToggleSwitchClicked);
             // 
             // keyDisplayLabel
             // 
@@ -424,11 +426,22 @@
             this.csvButton.UseVisualStyleBackColor = true;
             this.csvButton.Click += new System.EventHandler(this.CsvButton_Click);
             // 
+            // fretsToNotesToggle
+            // 
+            this.fretsToNotesToggle.Location = new System.Drawing.Point(156, 99);
+            this.fretsToNotesToggle.Name = "fretsToNotesToggle";
+            this.fretsToNotesToggle.Properties.OffText = "Notes";
+            this.fretsToNotesToggle.Properties.OnText = "Frets";
+            this.fretsToNotesToggle.Size = new System.Drawing.Size(101, 24);
+            this.fretsToNotesToggle.TabIndex = 23;
+            this.fretsToNotesToggle.Toggled += new System.EventHandler(this.FretsToNotesToggleClicked);
+            // 
             // GuitarBro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 293);
+            this.Controls.Add(this.fretsToNotesToggle);
             this.Controls.Add(this.csvButton);
             this.Controls.Add(this.guitarStringTuningDisplayLabel);
             this.Controls.Add(this.scalePatternDisplayLabel);
@@ -450,6 +463,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fretBoardGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minorMajorToggleSwitch.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fretsToNotesToggle.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -499,6 +513,7 @@
         private System.Windows.Forms.Label scalePatternDisplayLabel;
         private System.Windows.Forms.Label guitarStringTuningDisplayLabel;
         private System.Windows.Forms.Button csvButton;
+        private DevExpress.XtraEditors.ToggleSwitch fretsToNotesToggle;
     }
 
 

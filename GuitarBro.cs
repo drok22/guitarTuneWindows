@@ -61,24 +61,7 @@ namespace guitarBro
 
         private void FingerNotes()
         {
-            ChromaticScale[] scalePattern = FullChromaticScale(); // Put every note in an array just to catch errors if they happen.
-
-            switch(scaleDropDown.Text)
-            {
-                case "Pentatonic":
-                    scalePattern = PentatonicScalePatternForKey(ScaleValue(keyDropDown.Text));
-                    break;
-                case "Minor":
-                    scalePattern = MinorScalePatternForKey(ScaleValue(keyDropDown.Text));
-                    break;
-                case "Major":
-                    scalePattern = MajorScalePatternForKey(ScaleValue(keyDropDown.Text));
-                    break;
-                case "Blues":
-                    scalePattern = BluesScalePatternForKey(ScaleValue(keyDropDown.Text));
-                    break;
-                default: break;
-            }
+            ChromaticScale[] scalePattern = UpdateScalePattern();
 
             foreach (DataGridViewRow guitarString in fretBoardGrid.Rows)
             {
@@ -87,8 +70,16 @@ namespace guitarBro
 
                 for (int i = 0; i < guitarString.Cells.Count; i++)
                 {
+                    // if this note is contained in our scale pattern,
+                    // we mark it with a note or number based on toggle switch value.
                     if (scalePattern.Contains(chromaticNote))
-                        guitarString.Cells[i].Value = NoteStringValue(chromaticNote);
+                    {
+                        if(fretsToNotesToggle.IsOn)
+                            guitarString.Cells[i].Value = i.ToString();
+                        else
+                            guitarString.Cells[i].Value = NoteStringValue(chromaticNote);
+
+                    }
                     else
                         guitarString.Cells[i].Value = "";
 
@@ -240,9 +231,11 @@ namespace guitarBro
             for (int i = 0; i <= 5; i++)
                 fretBoardGrid.Rows.Add();
         }
+
         #endregion
 
         #region Tune Guitar
+
         private void ReStringGuitar()
         {
             ChromaticScale sixthString = TuneSixthString();
@@ -319,14 +312,21 @@ namespace guitarBro
 
         #region UI actions
 
-        private void MinorMajorToggleSwitch_Toggled(object sender, EventArgs e)
+        private void MinorMajorToggleSwitchClicked(object sender, EventArgs e)
         {
+            // Since the Major and Minor scales are also universal options, we'll make
+            // sure to auto-select the appropriate one if we change the toggle switch.
             if(scaleDropDown.Text.Equals("Minor") && minorMajorToggleSwitch.IsOn)
                 scaleDropDown.Text = "Major";
             else if (scaleDropDown.Text.Equals("Major") && !minorMajorToggleSwitch.IsOn)
                 scaleDropDown.Text = "Minor";
 
             UpdateMeBro();
+        }
+
+        private void FretsToNotesToggleClicked(object sender, EventArgs e)
+        {
+            FingerNotes();
         }
 
         private void KeySelected(object sender, ItemClickEventArgs clickedItem)
@@ -363,6 +363,10 @@ namespace guitarBro
         {
             SaveCSVFileWithText(CSVTextForCurrentScreen());
         }
+
+        #endregion
+
+        #region Save CSV
 
         private string CSVTextForCurrentScreen()
         {
@@ -418,6 +422,18 @@ namespace guitarBro
 
             return guitarFretCountCSV;
         }
+
+        private string CSVTextForEmptyRow()
+        {
+            string emptyRowCSVString = "";
+            for (int i = 0; i < fretBoardGrid.ColumnCount; i++)
+                emptyRowCSVString += ",";
+
+            emptyRowCSVString += "\n";
+
+            return emptyRowCSVString;
+        }
+
         #endregion
     }
 }
