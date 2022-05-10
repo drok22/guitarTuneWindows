@@ -1,8 +1,7 @@
 ﻿namespace guitarBro
 {
-    partial class GuitarBro
+    partial class GuitarBroWindows
     {
-
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -29,15 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
-            this.behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(this.components);
+            this.scaleLabel = new System.Windows.Forms.Label();
+            this.guitarTuningLabel = new System.Windows.Forms.Label();
             this.keyLabel = new System.Windows.Forms.Label();
-            this.tuningLabel = new System.Windows.Forms.Label();
-            this.keyDropDown = new DevExpress.XtraEditors.DropDownButton();
-            this.guitarKeyDropDown = new DevExpress.XtraEditors.DropDownButton();
-            this.tuningTypeDropDown = new DevExpress.XtraEditors.DropDownButton();
-            this.tuningTypeLabel = new System.Windows.Forms.Label();
+            this.keyCombo = new System.Windows.Forms.ComboBox();
+            this.guitarKeyCombo = new System.Windows.Forms.ComboBox();
+            this.scaleCombo = new System.Windows.Forms.ComboBox();
+            this.tuningTypeCombo = new System.Windows.Forms.ComboBox();
+            this.keyDisplayLabel = new System.Windows.Forms.Label();
+            this.guitarStringTuningDisplayLabel = new System.Windows.Forms.Label();
+            this.guitarTuningDisplayLabel = new System.Windows.Forms.Label();
+            this.scalePatternDisplayLabel = new System.Windows.Forms.Label();
+            this.csvButton = new System.Windows.Forms.Button();
             this.fretBoardGrid = new System.Windows.Forms.DataGridView();
             this.fret0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fret1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,20 +66,29 @@
             this.fret22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fret23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fret24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scaleDropDown = new DevExpress.XtraEditors.DropDownButton();
-            this.scaleLabel = new System.Windows.Forms.Label();
-            this.minorMajorToggleSwitch = new DevExpress.XtraEditors.ToggleSwitch();
-            this.keyDisplayLabel = new System.Windows.Forms.Label();
-            this.guitarTuningDisplayLabel = new System.Windows.Forms.Label();
-            this.scalePatternDisplayLabel = new System.Windows.Forms.Label();
-            this.guitarStringTuningDisplayLabel = new System.Windows.Forms.Label();
-            this.csvButton = new System.Windows.Forms.Button();
-            this.fretsToNotesToggle = new DevExpress.XtraEditors.ToggleSwitch();
-            ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
+            this.majorMinorCombo = new System.Windows.Forms.ComboBox();
+            this.fretboardDisplayLabel = new System.Windows.Forms.Label();
+            this.fretboardDisplayCombo = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.fretBoardGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minorMajorToggleSwitch.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fretsToNotesToggle.Properties)).BeginInit();
             this.SuspendLayout();
+            // 
+            // scaleLabel
+            // 
+            this.scaleLabel.AutoSize = true;
+            this.scaleLabel.Location = new System.Drawing.Point(12, 51);
+            this.scaleLabel.Name = "scaleLabel";
+            this.scaleLabel.Size = new System.Drawing.Size(34, 13);
+            this.scaleLabel.TabIndex = 19;
+            this.scaleLabel.Text = "Scale";
+            // 
+            // guitarTuningLabel
+            // 
+            this.guitarTuningLabel.AutoSize = true;
+            this.guitarTuningLabel.Location = new System.Drawing.Point(153, 9);
+            this.guitarTuningLabel.Name = "guitarTuningLabel";
+            this.guitarTuningLabel.Size = new System.Drawing.Size(40, 13);
+            this.guitarTuningLabel.TabIndex = 17;
+            this.guitarTuningLabel.Text = "Tuning";
             // 
             // keyLabel
             // 
@@ -85,61 +96,132 @@
             this.keyLabel.Location = new System.Drawing.Point(12, 9);
             this.keyLabel.Name = "keyLabel";
             this.keyLabel.Size = new System.Drawing.Size(25, 13);
-            this.keyLabel.TabIndex = 2;
+            this.keyLabel.TabIndex = 16;
             this.keyLabel.Text = "Key";
             // 
-            // tuningLabel
+            // keyCombo
             // 
-            this.tuningLabel.AutoSize = true;
-            this.tuningLabel.Location = new System.Drawing.Point(153, 9);
-            this.tuningLabel.Name = "tuningLabel";
-            this.tuningLabel.Size = new System.Drawing.Size(39, 13);
-            this.tuningLabel.TabIndex = 3;
-            this.tuningLabel.Text = "Tuning";
+            this.keyCombo.FormattingEnabled = true;
+            this.keyCombo.Items.AddRange(new object[] {
+            "A",
+            "A#",
+            "B",
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#"});
+            this.keyCombo.Location = new System.Drawing.Point(15, 25);
+            this.keyCombo.Name = "keyCombo";
+            this.keyCombo.Size = new System.Drawing.Size(41, 21);
+            this.keyCombo.TabIndex = 20;
+            this.keyCombo.SelectedIndexChanged += new System.EventHandler(this.KeyCombo_SelectedIndexChanged);
             // 
-            // keyDropDown
+            // guitarKeyCombo
             // 
-            this.keyDropDown.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.keyDropDown.DropDownArrowStyle = DevExpress.XtraEditors.DropDownArrowStyle.Hide;
-            this.keyDropDown.Location = new System.Drawing.Point(12, 25);
-            this.keyDropDown.Name = "keyDropDown";
-            this.keyDropDown.Size = new System.Drawing.Size(135, 23);
-            this.keyDropDown.TabIndex = 4;
-            this.keyDropDown.Text = "Select A Key";
+            this.guitarKeyCombo.FormattingEnabled = true;
+            this.guitarKeyCombo.Items.AddRange(new object[] {
+            "A",
+            "A#",
+            "B",
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#"});
+            this.guitarKeyCombo.Location = new System.Drawing.Point(156, 25);
+            this.guitarKeyCombo.Name = "guitarKeyCombo";
+            this.guitarKeyCombo.Size = new System.Drawing.Size(37, 21);
+            this.guitarKeyCombo.TabIndex = 21;
+            this.guitarKeyCombo.SelectedIndexChanged += new System.EventHandler(this.GuitarKeyCombo_SelectedIndexChanged);
             // 
-            // guitarKeyDropDown
+            // scaleCombo
             // 
-            this.guitarKeyDropDown.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.guitarKeyDropDown.DropDownArrowStyle = DevExpress.XtraEditors.DropDownArrowStyle.Hide;
-            this.guitarKeyDropDown.Location = new System.Drawing.Point(156, 25);
-            this.guitarKeyDropDown.Name = "guitarKeyDropDown";
-            this.guitarKeyDropDown.Size = new System.Drawing.Size(135, 23);
-            this.guitarKeyDropDown.TabIndex = 10;
-            this.guitarKeyDropDown.Text = "Tune Guitar To...";
+            this.scaleCombo.FormattingEnabled = true;
+            this.scaleCombo.Items.AddRange(new object[] {
+            "Major",
+            "Minor",
+            "Pentatonic",
+            "Blues"});
+            this.scaleCombo.Location = new System.Drawing.Point(15, 67);
+            this.scaleCombo.Name = "scaleCombo";
+            this.scaleCombo.Size = new System.Drawing.Size(121, 21);
+            this.scaleCombo.TabIndex = 22;
+            this.scaleCombo.SelectedIndexChanged += new System.EventHandler(this.ScaleCombo_SelectedIndexChanged);
             // 
-            // tuningTypeDropDown
+            // tuningTypeCombo
             // 
-            this.tuningTypeDropDown.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.tuningTypeDropDown.DropDownArrowStyle = DevExpress.XtraEditors.DropDownArrowStyle.Hide;
-            this.tuningTypeDropDown.Location = new System.Drawing.Point(156, 67);
-            this.tuningTypeDropDown.Name = "tuningTypeDropDown";
-            this.tuningTypeDropDown.Size = new System.Drawing.Size(135, 23);
-            this.tuningTypeDropDown.TabIndex = 11;
-            this.tuningTypeDropDown.Text = "Select A Tuning Type";
+            this.tuningTypeCombo.FormattingEnabled = true;
+            this.tuningTypeCombo.Items.AddRange(new object[] {
+            "Standard",
+            "Drop",
+            "Open"});
+            this.tuningTypeCombo.Location = new System.Drawing.Point(199, 25);
+            this.tuningTypeCombo.Name = "tuningTypeCombo";
+            this.tuningTypeCombo.Size = new System.Drawing.Size(74, 21);
+            this.tuningTypeCombo.TabIndex = 23;
+            this.tuningTypeCombo.SelectedIndexChanged += new System.EventHandler(this.TuningTypeCombo_SelectedIndexChanged);
             // 
-            // tuningTypeLabel
+            // keyDisplayLabel
             // 
-            this.tuningTypeLabel.AutoSize = true;
-            this.tuningTypeLabel.Location = new System.Drawing.Point(153, 51);
-            this.tuningTypeLabel.Name = "tuningTypeLabel";
-            this.tuningTypeLabel.Size = new System.Drawing.Size(66, 13);
-            this.tuningTypeLabel.TabIndex = 12;
-            this.tuningTypeLabel.Text = "Tuning Type";
+            this.keyDisplayLabel.AutoSize = true;
+            this.keyDisplayLabel.Location = new System.Drawing.Point(492, 9);
+            this.keyDisplayLabel.Name = "keyDisplayLabel";
+            this.keyDisplayLabel.Size = new System.Drawing.Size(43, 13);
+            this.keyDisplayLabel.TabIndex = 24;
+            this.keyDisplayLabel.Text = "E Minor";
+            // 
+            // guitarStringTuningDisplayLabel
+            // 
+            this.guitarStringTuningDisplayLabel.AutoSize = true;
+            this.guitarStringTuningDisplayLabel.Location = new System.Drawing.Point(492, 76);
+            this.guitarStringTuningDisplayLabel.Name = "guitarStringTuningDisplayLabel";
+            this.guitarStringTuningDisplayLabel.Size = new System.Drawing.Size(66, 13);
+            this.guitarStringTuningDisplayLabel.TabIndex = 26;
+            this.guitarStringTuningDisplayLabel.Text = "E A D G B E";
+            // 
+            // guitarTuningDisplayLabel
+            // 
+            this.guitarTuningDisplayLabel.AutoSize = true;
+            this.guitarTuningDisplayLabel.Location = new System.Drawing.Point(492, 56);
+            this.guitarTuningDisplayLabel.Name = "guitarTuningDisplayLabel";
+            this.guitarTuningDisplayLabel.Size = new System.Drawing.Size(88, 13);
+            this.guitarTuningDisplayLabel.TabIndex = 25;
+            this.guitarTuningDisplayLabel.Text = "Tune Guitar To...";
+            // 
+            // scalePatternDisplayLabel
+            // 
+            this.scalePatternDisplayLabel.AutoSize = true;
+            this.scalePatternDisplayLabel.Location = new System.Drawing.Point(492, 31);
+            this.scalePatternDisplayLabel.Name = "scalePatternDisplayLabel";
+            this.scalePatternDisplayLabel.Size = new System.Drawing.Size(82, 13);
+            this.scalePatternDisplayLabel.TabIndex = 27;
+            this.scalePatternDisplayLabel.Text = "E F# G A B C D";
+            // 
+            // csvButton
+            // 
+            this.csvButton.Location = new System.Drawing.Point(618, 71);
+            this.csvButton.Name = "csvButton";
+            this.csvButton.Size = new System.Drawing.Size(75, 23);
+            this.csvButton.TabIndex = 28;
+            this.csvButton.Text = "save to CSV";
+            this.csvButton.UseVisualStyleBackColor = true;
+            this.csvButton.Click += new System.EventHandler(this.CsvButton_Click);
             // 
             // fretBoardGrid
             // 
             this.fretBoardGrid.AllowUserToAddRows = false;
             this.fretBoardGrid.AllowUserToDeleteRows = false;
+            this.fretBoardGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fretBoardGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.fretBoardGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.fret0,
@@ -167,14 +249,14 @@
             this.fret22,
             this.fret23,
             this.fret24});
-            this.fretBoardGrid.Location = new System.Drawing.Point(0, 138);
+            this.fretBoardGrid.Location = new System.Drawing.Point(15, 100);
             this.fretBoardGrid.Name = "fretBoardGrid";
             this.fretBoardGrid.ReadOnly = true;
             this.fretBoardGrid.RowHeadersWidth = 50;
             this.fretBoardGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.fretBoardGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.fretBoardGrid.Size = new System.Drawing.Size(678, 154);
-            this.fretBoardGrid.TabIndex = 13;
+            this.fretBoardGrid.TabIndex = 29;
             // 
             // fret0
             // 
@@ -351,119 +433,65 @@
             this.fret24.ReadOnly = true;
             this.fret24.Width = 25;
             // 
-            // scaleDropDown
+            // majorMinorCombo
             // 
-            this.scaleDropDown.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.scaleDropDown.DropDownArrowStyle = DevExpress.XtraEditors.DropDownArrowStyle.Hide;
-            this.scaleDropDown.Location = new System.Drawing.Point(15, 67);
-            this.scaleDropDown.Name = "scaleDropDown";
-            this.scaleDropDown.Size = new System.Drawing.Size(135, 23);
-            this.scaleDropDown.TabIndex = 14;
-            this.scaleDropDown.Text = "Select A Scale...";
+            this.majorMinorCombo.FormattingEnabled = true;
+            this.majorMinorCombo.Items.AddRange(new object[] {
+            "Major",
+            "Minor"});
+            this.majorMinorCombo.Location = new System.Drawing.Point(62, 25);
+            this.majorMinorCombo.Name = "majorMinorCombo";
+            this.majorMinorCombo.Size = new System.Drawing.Size(74, 21);
+            this.majorMinorCombo.TabIndex = 30;
+            this.majorMinorCombo.SelectedIndexChanged += new System.EventHandler(this.MajorMinorCombo_SelectedIndexChanged);
             // 
-            // scaleLabel
+            // fretboardDisplayLabel
             // 
-            this.scaleLabel.AutoSize = true;
-            this.scaleLabel.Location = new System.Drawing.Point(12, 51);
-            this.scaleLabel.Name = "scaleLabel";
-            this.scaleLabel.Size = new System.Drawing.Size(32, 13);
-            this.scaleLabel.TabIndex = 15;
-            this.scaleLabel.Text = "Scale";
+            this.fretboardDisplayLabel.AutoSize = true;
+            this.fretboardDisplayLabel.Location = new System.Drawing.Point(153, 51);
+            this.fretboardDisplayLabel.Name = "fretboardDisplayLabel";
+            this.fretboardDisplayLabel.Size = new System.Drawing.Size(40, 13);
+            this.fretboardDisplayLabel.TabIndex = 31;
+            this.fretboardDisplayLabel.Text = "Tuning";
             // 
-            // minorMajorToggleSwitch
+            // fretboardDisplayCombo
             // 
-            this.minorMajorToggleSwitch.Location = new System.Drawing.Point(15, 99);
-            this.minorMajorToggleSwitch.Name = "minorMajorToggleSwitch";
-            this.minorMajorToggleSwitch.Properties.OffText = "Minor";
-            this.minorMajorToggleSwitch.Properties.OnText = "Major";
-            this.minorMajorToggleSwitch.Size = new System.Drawing.Size(101, 24);
-            this.minorMajorToggleSwitch.TabIndex = 16;
-            this.minorMajorToggleSwitch.Toggled += new System.EventHandler(this.MinorMajorToggleSwitchClicked);
+            this.fretboardDisplayCombo.FormattingEnabled = true;
+            this.fretboardDisplayCombo.Items.AddRange(new object[] {
+            "Notes",
+            "Frets",
+            "Dots"});
+            this.fretboardDisplayCombo.Location = new System.Drawing.Point(156, 67);
+            this.fretboardDisplayCombo.Name = "fretboardDisplayCombo";
+            this.fretboardDisplayCombo.Size = new System.Drawing.Size(121, 21);
+            this.fretboardDisplayCombo.TabIndex = 32;
+            this.fretboardDisplayCombo.SelectedIndexChanged += new System.EventHandler(this.FretboardDisplayCombo_SelectedIndexChanged);
             // 
-            // keyDisplayLabel
-            // 
-            this.keyDisplayLabel.AutoSize = true;
-            this.keyDisplayLabel.Location = new System.Drawing.Point(392, 25);
-            this.keyDisplayLabel.Name = "keyDisplayLabel";
-            this.keyDisplayLabel.Size = new System.Drawing.Size(42, 13);
-            this.keyDisplayLabel.TabIndex = 17;
-            this.keyDisplayLabel.Text = "E Minor";
-            // 
-            // guitarTuningDisplayLabel
-            // 
-            this.guitarTuningDisplayLabel.AutoSize = true;
-            this.guitarTuningDisplayLabel.Location = new System.Drawing.Point(392, 72);
-            this.guitarTuningDisplayLabel.Name = "guitarTuningDisplayLabel";
-            this.guitarTuningDisplayLabel.Size = new System.Drawing.Size(90, 13);
-            this.guitarTuningDisplayLabel.TabIndex = 19;
-            this.guitarTuningDisplayLabel.Text = "Tune Guitar To...";
-            // 
-            // scalePatternDisplayLabel
-            // 
-            this.scalePatternDisplayLabel.AutoSize = true;
-            this.scalePatternDisplayLabel.Location = new System.Drawing.Point(392, 47);
-            this.scalePatternDisplayLabel.Name = "scalePatternDisplayLabel";
-            this.scalePatternDisplayLabel.Size = new System.Drawing.Size(79, 13);
-            this.scalePatternDisplayLabel.TabIndex = 20;
-            this.scalePatternDisplayLabel.Text = "E F# G A B C D";
-            // 
-            // guitarStringTuningDisplayLabel
-            // 
-            this.guitarStringTuningDisplayLabel.AutoSize = true;
-            this.guitarStringTuningDisplayLabel.Location = new System.Drawing.Point(392, 92);
-            this.guitarStringTuningDisplayLabel.Name = "guitarStringTuningDisplayLabel";
-            this.guitarStringTuningDisplayLabel.Size = new System.Drawing.Size(61, 13);
-            this.guitarStringTuningDisplayLabel.TabIndex = 21;
-            this.guitarStringTuningDisplayLabel.Text = "E A D G B E";
-            // 
-            // csvButton
-            // 
-            this.csvButton.Location = new System.Drawing.Point(592, 104);
-            this.csvButton.Name = "csvButton";
-            this.csvButton.Size = new System.Drawing.Size(75, 23);
-            this.csvButton.TabIndex = 22;
-            this.csvButton.Text = "save to CSV";
-            this.csvButton.UseVisualStyleBackColor = true;
-            this.csvButton.Click += new System.EventHandler(this.CsvButton_Click);
-            // 
-            // fretsToNotesToggle
-            // 
-            this.fretsToNotesToggle.Location = new System.Drawing.Point(156, 99);
-            this.fretsToNotesToggle.Name = "fretsToNotesToggle";
-            this.fretsToNotesToggle.Properties.OffText = "Notes";
-            this.fretsToNotesToggle.Properties.OnText = "Frets";
-            this.fretsToNotesToggle.Size = new System.Drawing.Size(101, 24);
-            this.fretsToNotesToggle.TabIndex = 23;
-            this.fretsToNotesToggle.Toggled += new System.EventHandler(this.FretsToNotesToggleClicked);
-            // 
-            // GuitarBro
+            // GuitarBroWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(679, 293);
-            this.Controls.Add(this.fretsToNotesToggle);
+            this.ClientSize = new System.Drawing.Size(707, 316);
+            this.Controls.Add(this.fretboardDisplayCombo);
+            this.Controls.Add(this.fretboardDisplayLabel);
+            this.Controls.Add(this.majorMinorCombo);
+            this.Controls.Add(this.fretBoardGrid);
             this.Controls.Add(this.csvButton);
-            this.Controls.Add(this.guitarStringTuningDisplayLabel);
             this.Controls.Add(this.scalePatternDisplayLabel);
+            this.Controls.Add(this.guitarStringTuningDisplayLabel);
             this.Controls.Add(this.guitarTuningDisplayLabel);
             this.Controls.Add(this.keyDisplayLabel);
-            this.Controls.Add(this.minorMajorToggleSwitch);
+            this.Controls.Add(this.tuningTypeCombo);
+            this.Controls.Add(this.scaleCombo);
+            this.Controls.Add(this.guitarKeyCombo);
+            this.Controls.Add(this.keyCombo);
             this.Controls.Add(this.scaleLabel);
-            this.Controls.Add(this.scaleDropDown);
-            this.Controls.Add(this.fretBoardGrid);
-            this.Controls.Add(this.tuningTypeLabel);
-            this.Controls.Add(this.tuningTypeDropDown);
-            this.Controls.Add(this.guitarKeyDropDown);
-            this.Controls.Add(this.keyDropDown);
-            this.Controls.Add(this.tuningLabel);
+            this.Controls.Add(this.guitarTuningLabel);
             this.Controls.Add(this.keyLabel);
-            this.Name = "GuitarBro";
-            this.Text = "GuitarBro";
+            this.Name = "GuitarBroWindows";
+            this.Text = "Form1";
             this.Load += new System.EventHandler(this.LoadGuitarBro);
-            ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fretBoardGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minorMajorToggleSwitch.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fretsToNotesToggle.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -471,14 +499,18 @@
 
         #endregion
 
-        private DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel1;
-        private DevExpress.Utils.Behaviors.BehaviorManager behaviorManager1;
+        private System.Windows.Forms.Label scaleLabel;
+        private System.Windows.Forms.Label guitarTuningLabel;
         private System.Windows.Forms.Label keyLabel;
-        private System.Windows.Forms.Label tuningLabel;
-        private DevExpress.XtraEditors.DropDownButton keyDropDown;
-        private DevExpress.XtraEditors.DropDownButton guitarKeyDropDown;
-        private DevExpress.XtraEditors.DropDownButton tuningTypeDropDown;
-        private System.Windows.Forms.Label tuningTypeLabel;
+        private System.Windows.Forms.ComboBox keyCombo;
+        private System.Windows.Forms.ComboBox guitarKeyCombo;
+        private System.Windows.Forms.ComboBox scaleCombo;
+        private System.Windows.Forms.ComboBox tuningTypeCombo;
+        private System.Windows.Forms.Label keyDisplayLabel;
+        private System.Windows.Forms.Label guitarStringTuningDisplayLabel;
+        private System.Windows.Forms.Label guitarTuningDisplayLabel;
+        private System.Windows.Forms.Label scalePatternDisplayLabel;
+        private System.Windows.Forms.Button csvButton;
         private System.Windows.Forms.DataGridView fretBoardGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn fret0;
         private System.Windows.Forms.DataGridViewTextBoxColumn fret1;
@@ -505,17 +537,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fret22;
         private System.Windows.Forms.DataGridViewTextBoxColumn fret23;
         private System.Windows.Forms.DataGridViewTextBoxColumn fret24;
-        private DevExpress.XtraEditors.DropDownButton scaleDropDown;
-        private System.Windows.Forms.Label scaleLabel;
-        private DevExpress.XtraEditors.ToggleSwitch minorMajorToggleSwitch;
-        private System.Windows.Forms.Label keyDisplayLabel;
-        private System.Windows.Forms.Label guitarTuningDisplayLabel;
-        private System.Windows.Forms.Label scalePatternDisplayLabel;
-        private System.Windows.Forms.Label guitarStringTuningDisplayLabel;
-        private System.Windows.Forms.Button csvButton;
-        private DevExpress.XtraEditors.ToggleSwitch fretsToNotesToggle;
+        private System.Windows.Forms.ComboBox majorMinorCombo;
+        private System.Windows.Forms.Label fretboardDisplayLabel;
+        private System.Windows.Forms.ComboBox fretboardDisplayCombo;
     }
-
-
 }
-

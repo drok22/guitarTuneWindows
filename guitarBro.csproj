@@ -48,13 +48,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.BonusSkins.v17.2" />
-    <Reference Include="DevExpress.Data.v17.2" />
-    <Reference Include="DevExpress.Utils.v17.2" />
-    <Reference Include="DevExpress.Sparkline.v17.2.Core" />
-    <Reference Include="DevExpress.XtraBars.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v17.2" />
-    <Reference Include="DevExpress.Printing.v17.2.Core" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -67,19 +60,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ScalePatterns.cs">
+    <Compile Include="GuitarBroWindows.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GuitarBro.cs">
-      <SubType>Form</SubType>
+    <Compile Include="GuitarBroWindows.Designer.cs">
+      <DependentUpon>GuitarBroWindows.cs</DependentUpon>
     </Compile>
-    <Compile Include="GuitarBro.Designer.cs">
-      <DependentUpon>GuitarBro.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ScalePatterns.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GuitarBro.resx">
-      <DependentUpon>GuitarBro.cs</DependentUpon>
+    <EmbeddedResource Include="GuitarBroWindows.resx">
+      <DependentUpon>GuitarBroWindows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
